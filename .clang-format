@@ -5,7 +5,7 @@
 # Tested on: clang-format version 6.0.1
 
 # Common settings
-BasedOnStyle:  LLVM
+BasedOnStyle:  Google
 TabWidth:        4
 IndentWidth:     4
 UseTab:          Never
