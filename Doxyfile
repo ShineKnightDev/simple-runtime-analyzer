@@ -1,0 +1,34 @@
+PROJECT_NAME           = "Simple Runtime Analyzer"
+PROJECT_BRIEF          = "A simple C++ runtime analyzer for measuring execution time of functions and methods"
+OUTPUT_DIRECTORY       = docs/
+INPUT                  = include src docs
+FILE_PATTERNS          = *.hpp *.cpp *.dox
+RECURSIVE              = YES
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+STRIP_CODE_COMMENTS    = NO
+
+MARKDOWN_SUPPORT       = YES
+USE_MDFILE_AS_MAINPAGE = docs/index.dox
+
+INPUT_ENCODING         = UTF-8
+
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = svg
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+CLASS_DIAGRAMS         = YES
