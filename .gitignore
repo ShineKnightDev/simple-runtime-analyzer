@@ -4,6 +4,10 @@
 *.txt
 *.png
 .vscode/
+bin/
+data/
+example/bin/
+example/data/
 __pycache__/
 .DS_Store
 Thumbs.db
