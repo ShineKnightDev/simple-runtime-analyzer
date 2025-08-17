@@ -1,0 +1,15 @@
+/**
+ * @mainpage Simple Runtime Analyzer
+ *
+ * @brief Simple modular C++ toolkit for measuring runtime and generating samples.
+ *
+ * This project allows you to:
+ * - Precisely measure execution times using `std::chrono`
+ * - Run multiple tests and save results in different formats
+ * - Generate input samples with configurable bias
+ * - Serialize results to `.txt`, `.csv`, and `.json`
+ *
+ * @author Diego Osorio (@ShineKnightDev)
+ * @version 1.0
+ * @date 2025
+ */

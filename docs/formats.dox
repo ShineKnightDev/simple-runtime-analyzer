@@ -1,0 +1,12 @@
+/**
+ * @page formats Supported output formats
+ *
+ * Measurement functions allow results in:
+ *
+ * - `.txt`: Legible format with labels
+ * - `.csv`: Tabular format for spreadsheets
+ * - `.json`: Structured format for automatic analysis
+ *
+ * The file extension determines the format.
+ * If the extension is not recognized, an error is shown.
+ */
