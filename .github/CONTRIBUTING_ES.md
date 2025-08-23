@@ -1,4 +1,4 @@
-> 📄 Esta GUIA DE CONTRIBUCIÓN también está disponible en [English](CONTRIBUTING.md)
+> 📄 Esta GUIA DE CONTRIBUCIÓN también está disponible en [English](./CONTRIBUTING.md)
 
 # 🛠️ Guía para contribuir
 

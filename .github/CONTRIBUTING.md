@@ -1,4 +1,4 @@
-> 📄 This CONTRIBUTING GUIDE is also available in [Español](CONTRIBUTING_ES.md)
+> 📄 This CONTRIBUTING GUIDE is also available in [Español](./CONTRIBUTING_ES.md)
 
 # 🛠️ Contribution Guide
 
