@@ -20,7 +20,7 @@ Thank you for your interest in contributing to **Simple Runtime Analyzer**! This
 
 Before submitting your contribution, please ensure:
 
-- Use C++17 or higher
+- Use C++23
 - Follow project style conventions
   - [Clang Format](../.clang-format.yml)
   - [PEP 8](https://peps.python.org/pep-0008)
