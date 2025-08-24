@@ -6,7 +6,7 @@
 #   make clear                       # clean binaries and data files from your project
 
 CXX = clang++
-CXXFLAGS = -std=c++20 -O2 -Iinclude # Make sure 'include' is the right path to your Headers
+CXXFLAGS = -std=c++23 -stdlib=libc++ -O2 -Iinclude # Make sure 'include' is the right path to your Headers
 WARN = -Wall -Wextra -pedantic
 
 BIN_DIR = bin

@@ -4,7 +4,7 @@
 #   make clear                     # clean binaries and data files
 
 CXX = clang++
-CXXFLAGS = -std=c++20 -O2 -I../include
+CXXFLAGS = -std=c++23 -stdlib=libc++ -O2 -I../include
 WARN = -Wall -Wextra -pedantic
 
 BIN_DIR = bin

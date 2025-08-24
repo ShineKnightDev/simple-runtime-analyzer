@@ -23,7 +23,7 @@ This toolkit provides a set of powerful utilities to streamline your performance
 
 To use this toolkit, you'll need the following:
 
-* **C++:** A C++20 compliant compiler (`g++`, `clang++`, etc.).
+* **C++:** A C++23 compliant compiler (`g++`, `clang++`, etc.).
 * **Python:** Python 3.7+ with the `matplotlib` library.
 
 You can install `matplotlib` with `pip`:

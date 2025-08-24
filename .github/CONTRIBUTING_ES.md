@@ -20,7 +20,7 @@
 
 Antes de enviar tu contribución, asegúrate de:
 
-- Usar C++17 o superior
+- Usar C++23
 - Seguir las convenciones de estilo del proyecto
   - [Clang Format](../.clang-format.yml)
   - [PEP 8](https://peps.python.org/pep-0008)
