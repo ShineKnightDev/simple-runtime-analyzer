@@ -4,6 +4,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -17,7 +18,8 @@ struct MeasurementResult
     Unit unit_value;
 
     MeasurementResult(std::vector<Unit>&& _times, std::string _unit_symbol, Unit _unit_value)
-        : times(std::move(_times)), unit_symbol(std::move(_unit_symbol)), unit_value(_unit_value) {}
+        : times(std::move(_times)), unit_symbol(std::move(_unit_symbol)), unit_value(_unit_value)
+    {}
 
     template <typename OtherUnit>
     MeasurementResult(const MeasurementResult<OtherUnit>& other)
@@ -54,17 +56,17 @@ private:
 // clang-format off
 template <typename Unit> std::string getUnitSymbol();
 
-template <> std::string getUnitSymbol<std::chrono::nanoseconds>() { return "ns"; }
+template <> inline std::string getUnitSymbol<std::chrono::nanoseconds>() { return "ns"; }
 
-template <> std::string getUnitSymbol<std::chrono::microseconds>() { return "μs"; }
+template <> inline std::string getUnitSymbol<std::chrono::microseconds>() { return "μs"; }
 
-template <> std::string getUnitSymbol<std::chrono::milliseconds>() { return "ms"; }
+template <> inline std::string getUnitSymbol<std::chrono::milliseconds>() { return "ms"; }
 
-template <> std::string getUnitSymbol<std::chrono::seconds>() { return "s"; }
+template <> inline std::string getUnitSymbol<std::chrono::seconds>() { return "s"; }
 
-template <> std::string getUnitSymbol<std::chrono::minutes>() { return "min"; }
+template <> inline std::string getUnitSymbol<std::chrono::minutes>() { return "min"; }
 
-template <> std::string getUnitSymbol<std::chrono::hours>() { return "h"; }
+template <> inline std::string getUnitSymbol<std::chrono::hours>() { return "h"; }
 // clang-format on
 //#endregion
 
