@@ -1,9 +1,13 @@
 #pragma once
-#include <algorithm>
+#include <cmath>
 #include <filesystem>
 #include <fstream>
-#include <random>
+#include <iostream>
+#include <iterator>
 #include <set>
+#include <sstream>
+#include <string>
+#include <utility>
 #include <vector>
 
 struct SampleSizeConfig
@@ -12,12 +16,12 @@ struct SampleSizeConfig
     double bias = 1.0;
 };
 
-size_t roundTo(size_t value, size_t multiple)
+inline size_t roundTo(size_t value, size_t multiple)
 {
     return ((value + multiple / 2) / multiple) * multiple;
 }
 
-std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
+inline std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
 {
     std::vector<size_t> result;
     if (sample_count == 0 || max_sample_size < config.round_to) { return result; }
