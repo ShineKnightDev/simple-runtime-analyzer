@@ -1,17 +1,18 @@
+#include <iostream>
 #include <algorithm>
 #include <chrono>
-#include <iostream>
 #include <random>
 #include <vector>
 
-#include "../../include/shineknightdev/measure_time.hpp"
-#include "../../include/shineknightdev/sample_utils.hpp"
-
+#include "shineknightdev/runtime_analyzer"
+#include "shineknightdev/runtime_reporter"
+#include "shineknightdev/sample_utils"
+                 
 constexpr int MIN_SAMPLE_VALUE = 0;
 constexpr int MAX_SAMPLE_VALUE = 10000;
 
-void fillWithRandomInts(std::vector<int>&, size_t);
-void sortSample(std::vector<int>, bool);
+void fill_with_random_ints(std::vector<int>&, size_t);
+void sort_sample(std::vector<int>, bool);
 
 int main()
 {
@@ -19,37 +20,34 @@ int main()
     constexpr size_t sample_count = 10; // Number of samples to generate
     constexpr size_t max_sample_size = 1000000; // Larger sample size
 
-    std::vector<size_t> sizes = generateSizes(sample_count, max_sample_size, {.round_to = 200, .bias = 1.5});
-    auto samples = generateSamples<int>(fillWithRandomInts, sizes);
+    std::vector<size_t> sizes = generate_sizes(sample_count, max_sample_size, {.round_to = 200, .bias = 1.5});
+    auto samples = generate_samples<int>(fill_with_random_ints, sizes);
     bool use_stable_sort = false; // Variable used in the example to decide whether to use sort or stable_sort
 
     // Measure execution time
     std::cout << "⏱️ Measuring function performance...\n";
-    auto result = measureMultipleTimes<std::chrono::microseconds>(sortSample, samples, use_stable_sort);
+    auto result = profile_runtime<std::chrono::microseconds>(sort_sample, samples, use_stable_sort);
 
     // Convert measurement results to a different unit
-    auto converted_result = result.convertTo<std::chrono::milliseconds>();
+    auto converted_result = result.convert_to<std::chrono::milliseconds>();
 
-    // Print converted results
-    for (size_t i = 0; i < converted_result.times.size(); ++i)
-    {
-        std::cout << "Sample " << i + 1 << ": " << "| Time: " << converted_result.times[i].count() << " "
-                  << converted_result.unit_symbol << "| Sample size: " << samples[i].size() << "\n";
-    }
+    // Print report to console
+    print_report(converted_result);
+
+    // Save report to file
+    std::string csv_filename = "data/report.csv";
+    save_report(converted_result, csv_filename);
+    std::cout << "💾 Report written to " << csv_filename << "\n";
 
     // Serialize samples to a file
-    serializeSamplesToFile(samples, serializeIterable<std::vector<int>>, "data/samples.csv");
+    save_samples(samples, serialize_iterable<std::vector<int>>, "data/samples.csv");
     std::cout << "💾 Samples written to data/samples.csv\n";
-
-    // Measure execution time and save the results to a file directly
-    measureMultipleTimesToFile<std::chrono::microseconds>(sortSample, samples, "data/times.csv", use_stable_sort);
-    std::cout << "💾 Results written to data/times.csv\n";
 
     return 0;
 }
 
 // Example function to measure (sort a sample)
-void sortSample(std::vector<int> sample, bool use_stable_sort = false)
+void sort_sample(std::vector<int> sample, bool use_stable_sort = false)
 {
     if (use_stable_sort)
     {
@@ -60,7 +58,7 @@ void sortSample(std::vector<int> sample, bool use_stable_sort = false)
 }
 
 // Example filler function (generate random integers)
-void fillWithRandomInts(std::vector<int>& vec, size_t size)
+void fill_with_random_ints(std::vector<int>& vec, size_t size)
 {
     static std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(MIN_SAMPLE_VALUE, MAX_SAMPLE_VALUE);

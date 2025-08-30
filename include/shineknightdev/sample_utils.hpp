@@ -1,14 +1,13 @@
-#pragma once
-#include <cmath>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <iterator>
+#include <filesystem>
+#include <cmath>
 #include <set>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
+#include <stdexcept>
 
 struct SampleSizeConfig
 {
@@ -16,12 +15,12 @@ struct SampleSizeConfig
     double bias = 1.0;
 };
 
-inline size_t roundTo(size_t value, size_t multiple)
+inline size_t round_to(size_t value, size_t multiple)
 {
     return ((value + multiple / 2) / multiple) * multiple;
 }
 
-inline std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
+inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
 {
     std::vector<size_t> result;
     if (sample_count == 0 || max_sample_size < config.round_to) { return result; }
@@ -38,7 +37,7 @@ inline std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_
         double t = std::pow(static_cast<double>(i) / (oversample - 1), config.bias);
         double log_size = log_min + t * (log_max - log_min);
         size_t raw_size = static_cast<size_t>(std::round(std::pow(10.0, log_size)));
-        size_t rounded = roundTo(raw_size, config.round_to);
+        size_t rounded = round_to(raw_size, config.round_to);
         if (rounded <= max_sample_size) { seen.insert(rounded); }
     }
 
@@ -58,17 +57,25 @@ inline std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_
 
     // Uniform downsampling
     std::vector<size_t> final_sizes;
-    final_sizes.reserve(sample_count);
-    size_t available = all_sizes.size();
-    for (size_t i = 0; i < sample_count; ++i)
+    if (sample_count > 0 && !all_sizes.empty())
     {
-        double t = static_cast<double>(i) / (sample_count - 1);
-        size_t index = static_cast<size_t>(std::round(t * (available - 1)));
-        final_sizes.push_back(all_sizes[index]);
+        final_sizes.reserve(sample_count);
+        size_t available = all_sizes.size();
+
+        if (sample_count == 1) { final_sizes.push_back(all_sizes.back()); }
+        else
+        {
+            for (size_t i = 0; i < sample_count; ++i)
+            {
+                double t = static_cast<double>(i) / (sample_count - 1);
+                size_t index = static_cast<size_t>(std::round(t * (available - 1)));
+                final_sizes.push_back(all_sizes[index]);
+            }
+        }
     }
 
     // Step 5: Ensure last value is max_sample_size
-    if (max_sample_size % config.round_to == 0) { final_sizes.back() = max_sample_size; }
+    if (!final_sizes.empty() && max_sample_size % config.round_to == 0) { final_sizes.back() = max_sample_size; }
 
     result = final_sizes;
 
@@ -76,7 +83,7 @@ inline std::vector<size_t> generateSizes(size_t sample_count, size_t max_sample_
 }
 
 template <typename T, typename F>
-std::vector<std::vector<T>> generateSamples(F&& filler, std::vector<size_t> sizes)
+std::vector<std::vector<T>> generate_samples(F&& filler, std::vector<size_t> sizes)
 {
     std::vector<std::vector<T>> result;
     result.reserve(sizes.size());
@@ -92,7 +99,7 @@ std::vector<std::vector<T>> generateSamples(F&& filler, std::vector<size_t> size
 }
 
 template <typename Iterable>
-std::string serializeIterable(const Iterable& container)
+std::string serialize_iterable(const Iterable& container)
 {
     std::ostringstream oss;
     oss << "[";
@@ -108,13 +115,12 @@ std::string serializeIterable(const Iterable& container)
 }
 
 template <typename Container, typename Serializer>
-void serializeSamplesToFile(const Container& samples, Serializer&& serializer, const std::string& filename)
+void save_samples(const Container& samples, Serializer&& serializer, const std::string& filename)
 {
     std::ofstream file(filename);
     if (!file.is_open())
     {
-        std::cerr << "Error: Could not open file " << filename << std::endl;
-        return;
+        throw std::runtime_error("Error: Could not open file " + filename);
     }
 
     std::string ext = std::filesystem::path(filename).extension().string();
@@ -132,13 +138,14 @@ void serializeSamplesToFile(const Container& samples, Serializer&& serializer, c
     else if (ext == ".json")
     {
         file << "[\n";
-        for (auto it = samples.begin(); it != samples.end(); ++it)
+        size_t i = 0;
+        for (const auto& sample : samples)
         {
-            file << "  \"" << serializer(*it) << "\"";
-            if (std::next(it) != samples.end()) { file << ","; }
+            file << "  \"" << serializer(sample) << "\"";
+            if (++i < samples.size()) { file << ","; }
             file << "\n";
         }
         file << "]\n";
     }
-    else { std::cerr << "Error: Unsupported file extension '" << ext << "'\n"; }
+    else { throw std::runtime_error("Error: Unsupported file extension "+ ext);}
 }

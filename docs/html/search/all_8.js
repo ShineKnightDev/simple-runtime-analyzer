@@ -1,9 +1,0 @@
-var searchData=
-[
-  ['measure_5ftime_2edox_0',['measure_time.dox',['../measure__time_8dox.html',1,'']]],
-  ['measure_5ftime_2ehpp_1',['measure_time.hpp',['../measure__time_8hpp.html',1,'']]],
-  ['measurementresult_2',['measurementresult',['../structMeasurementResult.html',1,'MeasurementResult&lt; Unit &gt;'],['../structMeasurementResult.html#a21a932f79293514034c6d82c5cfbfbde',1,'MeasurementResult::MeasurementResult(std::vector&lt; Unit &gt; &amp;&amp;_times, std::string _unit_symbol, Unit _unit_value)'],['../structMeasurementResult.html#a96c1c58b07a8415d92b8bea96051b709',1,'MeasurementResult::MeasurementResult(const MeasurementResult&lt; OtherUnit &gt; &amp;other)']]],
-  ['measuremultipletimes_3',['measuremultipletimes',['../measure__time_8hpp.html#a8686db837cd3fc0a5f1924b3cb0e0da6',1,'measureMultipleTimes(Func &amp;&amp;func, const Container &amp;samples, Args &amp;&amp;... args):&#160;measure_time.hpp'],['../measure__time_8dox.html#a1f8893250e2da26750da4a3979bff4f8',1,'measureMultipleTimes(size_t repetitions, Func &amp;&amp;func, Args &amp;&amp;... args):&#160;measure_time.dox']]],
-  ['measuremultipletimestofile_4',['measuremultipletimestofile',['../measure__time_8hpp.html#a89a9b0dd515af21c6ad7e74b9bfb5e51',1,'measureMultipleTimesToFile(Func &amp;&amp;func, const Container &amp;samples, const std::string &amp;filename, Args &amp;&amp;... args):&#160;measure_time.hpp'],['../measure__time_8dox.html#add1945c4894364f40a6cac809f01db69',1,'measureMultipleTimesToFile(size_t repetitions, const std::string &amp;filename, Func &amp;&amp;func, Args &amp;&amp;... args):&#160;measure_time.dox']]],
-  ['measuretime_5',['measuretime',['../measure__time_8hpp.html#a8ee34cc7908e742a0ed84b789217caae',1,'measureTime(Func &amp;&amp;func, Args &amp;&amp;... args):&#160;measure_time.hpp'],['../measure__time_8dox.html#ac230d402987bab4150b4b82d8ec6685a',1,'measureTime(Func &amp;&amp;func, Args &amp;&amp;... args):&#160;measure_time.hpp']]]
-];

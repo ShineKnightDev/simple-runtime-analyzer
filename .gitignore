@@ -5,6 +5,7 @@
 *.png
 .vscode/
 bin/
+build/
 data/
 example/bin/
 example/data/
