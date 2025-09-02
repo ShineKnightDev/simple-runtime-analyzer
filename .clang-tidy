@@ -2,7 +2,6 @@
 Checks:          '*, -google-runtime-references, -modernize-use-trailing-return-type, -modernize-use-transparent-functors'
 WarningsAsErrors:  '*'
 HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: true
 CheckOptions:
   - { key: readability-identifier-naming.CheckFunctionName, value: 'true' }
   - { key: readability-identifier-naming.FunctionNameCase, value: 'snake_case' }

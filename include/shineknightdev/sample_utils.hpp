@@ -1,43 +1,109 @@
-#include <fstream>
-#include <iostream>
-#include <filesystem>
+#pragma once
+
 #include <cmath>
+#include <cstddef>
+#include <filesystem>
+#include <format>
+#include <fstream>
+#include <iomanip>
+#include <ostream>
+#include <ranges>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
-#include <stdexcept>
 
+// [Namespace definition]
+namespace sra
+{
+
+// [detail namespace for implementation details]
+namespace detail
+{
+// Concept to check if a type can be inserted into an ostream
+template <typename T>
+concept StreamInsertable = requires(std::ostream& os, const T& t) {
+    { os << t } -> std::same_as<std::ostream&>;
+};
+
+// Concept for a function that can fill a vector of type T
+template <typename F, typename T>
+concept FillerFunction = std::invocable<F, std::vector<T>&, size_t>;
+
+// Concept for a function that serializes a sample
+template <typename S, typename Sample>
+concept SampleSerializer =
+    std::invocable<S, const Sample&> && std::is_convertible_v<std::invoke_result_t<S, const Sample&>, std::string>;
+
+// [escape_json function]
+inline std::string escape_json(const std::string& s) noexcept
+{
+    std::ostringstream o;
+    for (auto c : s)
+    {
+        switch (c)
+        {
+        case '"': o << "\\\""; break;
+        case '\\': o << "\\\\"; break;
+        case '\b': o << "\\b"; break;
+        case '\f': o << "\\f"; break;
+        case '\n': o << "\\n"; break;
+        case '\r': o << "\\r"; break;
+        case '\t': o << "\\t"; break;
+        default:
+            if ('\x00' <= c && c <= '\x1f')
+            {
+                o << "\\u" << std::hex << std::setw(4) << std::setfill('0') << static_cast<int>(c);
+            }
+            else { o << c; }
+        }
+    }
+    return o.str();
+}
+// [<--]
+} // namespace detail
+// [<--]
+
+// [SampleSizeConfig struct]
 struct SampleSizeConfig
 {
     size_t round_to = 100;
     double bias = 1.0;
 };
+// [<--]
 
-inline size_t round_to(size_t value, size_t multiple)
+// [round_to function]
+inline size_t round_to(size_t value, size_t multiple) noexcept
 {
+    if (multiple == 0) return value;
     return ((value + multiple / 2) / multiple) * multiple;
 }
+// [<--]
 
-inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
+// [generate_sizes function]
+[[nodiscard]] inline std::vector<size_t>
+generate_sizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
 {
-    std::vector<size_t> result;
-    if (sample_count == 0 || max_sample_size < config.round_to) { return result; }
+    if (sample_count == 0 || max_sample_size < config.round_to) { return {}; }
+    if (sample_count == 1) { return {max_sample_size}; }
 
-    double log_min = std::log10(static_cast<double>(config.round_to));
-    double log_max = std::log10(static_cast<double>(max_sample_size));
+    const double log_min = std::log10(static_cast<double>(config.round_to));
+    const double log_max = std::log10(static_cast<double>(max_sample_size));
 
     std::set<size_t> seen;
 
     // Oversample with bias
-    size_t oversample = sample_count * 3;
+    const size_t oversample = sample_count * 3;
     for (size_t i = 0; i < oversample; ++i)
     {
-        double t = std::pow(static_cast<double>(i) / (oversample - 1), config.bias);
-        double log_size = log_min + t * (log_max - log_min);
-        size_t raw_size = static_cast<size_t>(std::round(std::pow(10.0, log_size)));
-        size_t rounded = round_to(raw_size, config.round_to);
+        const double t = std::pow(static_cast<double>(i) / (oversample - 1), config.bias);
+        const double log_size = log_min + t * (log_max - log_min);
+        const size_t raw_size = static_cast<size_t>(std::round(std::pow(10.0, log_size)));
+        const size_t rounded = round_to(raw_size, config.round_to);
+
         if (rounded <= max_sample_size) { seen.insert(rounded); }
     }
 
@@ -49,8 +115,8 @@ inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample
     // Fill in gaps if needed
     while (all_sizes.size() < sample_count)
     {
-        size_t last = all_sizes.back();
-        size_t next = last + config.round_to;
+        const size_t last = all_sizes.back();
+        const size_t next = last + config.round_to;
         if (next <= max_sample_size) { all_sizes.push_back(next); }
         else { break; }
     }
@@ -60,30 +126,30 @@ inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample
     if (sample_count > 0 && !all_sizes.empty())
     {
         final_sizes.reserve(sample_count);
-        size_t available = all_sizes.size();
+        const size_t available = all_sizes.size();
 
         if (sample_count == 1) { final_sizes.push_back(all_sizes.back()); }
         else
         {
             for (size_t i = 0; i < sample_count; ++i)
             {
-                double t = static_cast<double>(i) / (sample_count - 1);
-                size_t index = static_cast<size_t>(std::round(t * (available - 1)));
+                const double t = static_cast<double>(i) / (sample_count - 1);
+                const size_t index = static_cast<size_t>(std::round(t * (available - 1)));
                 final_sizes.push_back(all_sizes[index]);
             }
         }
     }
 
-    // Step 5: Ensure last value is max_sample_size
+    // Ensure last value is max_sample_size
     if (!final_sizes.empty() && max_sample_size % config.round_to == 0) { final_sizes.back() = max_sample_size; }
 
-    result = final_sizes;
-
-    return result;
+    return final_sizes;
 }
+// [<--]
 
-template <typename T, typename F>
-std::vector<std::vector<T>> generate_samples(F&& filler, std::vector<size_t> sizes)
+// [generate_samples function]
+template <typename T, detail::FillerFunction<T> F>
+[[nodiscard]] std::vector<std::vector<T>> generate_samples(F&& filler, const std::vector<size_t>& sizes)
 {
     std::vector<std::vector<T>> result;
     result.reserve(sizes.size());
@@ -97,33 +163,33 @@ std::vector<std::vector<T>> generate_samples(F&& filler, std::vector<size_t> siz
 
     return result;
 }
+// [<--]
 
-template <typename Iterable>
-std::string serialize_iterable(const Iterable& container)
+// [serialize_iterable function]
+template <std::ranges::range Iterable>
+requires detail::StreamInsertable<std::ranges::range_value_t<Iterable>>
+[[nodiscard]] std::string serialize_iterable(const Iterable& container)
 {
-    std::ostringstream oss;
-    oss << "[";
-    auto it = container.begin();
-    while (it != container.end())
-    {
-        oss << *it;
-        ++it;
-        if (it != container.end()) { oss << ", "; }
-    }
-    oss << "]";
-    return oss.str();
-}
+    if (std::ranges::empty(container)) { return "[]"; }
 
-template <typename Container, typename Serializer>
-void save_samples(const Container& samples, Serializer&& serializer, const std::string& filename)
+    auto it = std::ranges::begin(container);
+    std::string result = std::format("[{}", *it);
+
+    for (++it; it != std::ranges::end(container); ++it) { result += std::format(", {}", *it); }
+    result += "]";
+
+    return result;
+}
+// [<--]
+
+// [save_samples function]
+template <std::ranges::range Container, detail::SampleSerializer<std::ranges::range_value_t<Container>> Serializer>
+void save_samples(const Container& samples, Serializer&& serializer, const std::filesystem::path& filename)
 {
     std::ofstream file(filename);
-    if (!file.is_open())
-    {
-        throw std::runtime_error("Error: Could not open file " + filename);
-    }
+    if (!file.is_open()) { throw std::runtime_error("Error: Could not open file " + filename.string()); }
 
-    std::string ext = std::filesystem::path(filename).extension().string();
+    const auto ext = filename.extension();
 
     if (ext == ".txt")
     {
@@ -138,14 +204,34 @@ void save_samples(const Container& samples, Serializer&& serializer, const std::
     else if (ext == ".json")
     {
         file << "[\n";
-        size_t i = 0;
+        bool first = true;
         for (const auto& sample : samples)
         {
-            file << "  \"" << serializer(sample) << "\"";
-            if (++i < samples.size()) { file << ","; }
-            file << "\n";
+            if (!first) { file << ",\n"; }
+            file << "  \"" << detail::escape_json(serializer(sample)) << "\"";
+            first = false;
         }
-        file << "]\n";
+        file << "\n]\n";
     }
-    else { throw std::runtime_error("Error: Unsupported file extension "+ ext);}
+    else { throw std::runtime_error("Error: Unsupported file extension " + ext.string()); }
 }
+// [<--]
+
+// [save_samples overload with default serializer]
+template <std::ranges::range Container>
+requires detail::StreamInsertable<std::ranges::range_value_t<Container>>
+void save_samples(const Container& samples, const std::filesystem::path& filename)
+{
+    save_samples(samples, serialize_iterable<Container>, filename);
+}
+// [<--]
+
+// [Utility function to generate sample sizes with default config]
+[[nodiscard]] inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample_size)
+{
+    return generate_sizes(sample_count, max_sample_size, SampleSizeConfig{});
+}
+// [<--]
+
+} // namespace sra
+// [<--]

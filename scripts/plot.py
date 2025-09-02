@@ -77,18 +77,37 @@ def plot_metrics(sizes, times, unit, source_path):
     output_path = os.path.splitext(source_path)[0] + '.png'
     plt.savefig(output_path)
     print(f"✅ Plot saved to {output_path}")
-    plt.show()
+
+    if os.getenv('SUPPRESS_PLOT_DISPLAY'):
+        plt.close()
+    else:
+        plt.show()
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: python plot.py <data_file.csv>")
+        print("Usage: python plot.py <data_file>")
+        print("Supported formats: .csv, .json")
+        print("Example: python plot.py data/report.csv")
+        print("Example: python plot.py data/report.json")
         sys.exit(1)
 
     file_path = sys.argv[1]
+    
+    # Verify that the file exists before processing
+    if not os.path.exists(file_path):
+        print(f"❌ Error: File '{file_path}' not found")
+        sys.exit(1)
+        
+    # Verify that the extension is supported
+    ext = os.path.splitext(file_path)[1].lower()
+    if ext not in ['.csv', '.json']:
+        print(f"❌ Error: Unsupported file format '{ext}'. Use .csv or .json")
+        sys.exit(1)
+
     try:
         sizes, times, unit = read_data(file_path)
         plot_metrics(sizes, times, unit, file_path)
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"❌ Error processing file: {e}")
         sys.exit(1)

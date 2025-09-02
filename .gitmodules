@@ -1,0 +1,4 @@
+[submodule "docs/awesome-doxygen"]
+	path = docs/awesome-doxygen
+	url = https://github.com/jothepro/doxygen-awesome-css.git
+	branch = main
