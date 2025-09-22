@@ -1,14 +1,13 @@
 *.o
 *.out
 *.exe
-*.txt
-*.png
+.cache/
 .vscode/
 bin/
 build/
 data/
-example/bin/
-example/data/
+venv/
+compile_commands.json
 __pycache__/
 .DS_Store
 Thumbs.db
