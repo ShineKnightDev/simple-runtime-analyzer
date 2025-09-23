@@ -17,7 +17,7 @@ A C++ Header-Only Runtime Performance Analysis Library
 
 [TOC]
 
-## Overview
+# Overview
 
 **Simple Runtime Analyzer** is a header-only C++ library for precise runtime performance profiling and benchmarking. It provides a modern, type-safe API to measure and analyze the execution time of functions and algorithms across varying input sizes.  
 
@@ -150,7 +150,7 @@ cmake --build build --target example_run
 
 For a comprehensive overview of the library, including a detailed API reference for each module, please visit the official documentation website.
 
-<https://simpleruntimeanalyzer.github.io>
+<https://shineknightdev.github.io/simple-runtime-analyzer>
 
 -----
 

@@ -7,7 +7,6 @@ bin/
 build/
 data/
 docs/fonts/
-docs/html/
 venv/
 compile_commands.json
 __pycache__/

@@ -1,4 +1,4 @@
-# Usage Notes and Best Practices
+# Usage Notes
 
 This section provides practical and safety tips for using the **Simple Runtime Analyzer** library effectively. By following these recommendations, you can avoid common errors and ensure the reliability of your performance analysis.
 
