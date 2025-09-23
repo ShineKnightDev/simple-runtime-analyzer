@@ -1,4 +1,4 @@
-> 📄 Este CÓDIGO DE CONDUCTA también está disponible en [English](<../CODE OF CONDUCT.md>)
+> 📄 Este CÓDIGO DE CONDUCTA también está disponible en [English](../CODE_OF_CONDUCT.md)
 
 # Código de Conducta convenido para Contribuyentes
 

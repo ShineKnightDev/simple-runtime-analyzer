@@ -1,3 +1,5 @@
+# Simple Runtime Analyzer
+
 [![GitHub Release](https://img.shields.io/github/v/release/shineknightdev/simple-runtime-analyzer)](https://github.com/ShineKnightDev/simple-runtime-analyzer/releases/latest)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shineknightdev/simple-runtime-analyzer)
 ![C++](https://img.shields.io/badge/C++-23-659ad2?style=flat&logo=cplusplus&logoColor=ffffff&logoSize=auto&labelColor=004482&color=659ad2)
@@ -7,11 +9,15 @@
 
 A C++ Header-Only Runtime Performance Analysis Library
 
-<div class="title_screenshot"> ![SRA plot tool graph](docs/img/screenshot.png) </div>
+<div class="title_screenshot">
+
+![SRA plot tool graph](docs/img/screenshot.png)
+
+</div>
 
 [TOC]
 
-# Overview
+## Overview
 
 **Simple Runtime Analyzer** is a header-only C++ library for precise runtime performance profiling and benchmarking. It provides a modern, type-safe API to measure and analyze the execution time of functions and algorithms across varying input sizes.  
 
@@ -103,7 +109,7 @@ simple-runtime-analyzer
 ├─ .clang-format
 ├─ .clang-tidy
 ├─ CMakeLists.txt
-├─ CODE OF CONDUCT.md
+├─ CODE_OF_CONDUCT.md
 ├─ docs/
 ├─ Doxyfile
 ├─ LICENSE.md

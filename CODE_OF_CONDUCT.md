@@ -1,4 +1,4 @@
-> 📄 This CODE OF CONDUCT is also available in [Español](<.github/CODE OF CONDUCT ES.md>)
+> 📄 This CODE OF CONDUCT is also available in [Español](.github/CODE_OF_CONDUCT_ES.md)
 
 # Contributor Covenant Code of Conduct
 
