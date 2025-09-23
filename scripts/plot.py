@@ -23,7 +23,7 @@ plt.rcParams.update({
     'xtick.color': '#FFFFFF',         # White X-axis markers
     'ytick.color': '#FFFFFF',         # White Y-axis markers
     'grid.color': '#38393b',          # Grid color
-    'grid.alpha': 0.8,                  # Grid transparency
+    'grid.alpha': 0.8,                # Grid transparency
     'legend.facecolor': '#111111',    # Legend background
     'legend.edgecolor': '#333333',    # Legend border
     'legend.labelcolor': '#FFFFFF'    # Legend text
