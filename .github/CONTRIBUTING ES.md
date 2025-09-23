@@ -9,7 +9,7 @@
 ## 📦 Tipos de contribuciones bienvenidas
 
 - Nuevos algoritmos o funciones de benchmarking
-- Mejoras en la documentación técnica (`.dox`, ejemplos, README)
+- Mejoras en la documentación técnica
 - Correcciones de errores o mejoras de rendimiento
 - Scripts de visualización o análisis adicionales
 - Traducciones o mejoras en el onboarding
@@ -30,18 +30,9 @@ Antes de enviar tu contribución, asegúrate de:
 
 ---
 
-## 📁 Organización del proyecto
-
-- `include/`: headers públicos
-- `docs/`: documentación técnica (`.dox`, ejemplos, notas)
-- `example/`: casos de uso
-- `data/`: archivos generados por pruebas
-
----
-
 ## 🧪 Cómo probar tu contribución
 
-1. Asegúrate de que el proyecto compila con `make`.
+1. Asegúrate de que el proyecto compila con CMake.
 2. Ejecuta `example.cpp` o crea un nuevo archivo en `examples/`.
 3. Verifica que los archivos `.csv` y `.json` se generan correctamente.
 4. Usa `plot.py` para visualizar los resultados.
@@ -52,7 +43,7 @@ Antes de enviar tu contribución, asegúrate de:
 ## 📝 Cómo enviar tu contribución
 
 1. Haz un fork del repositorio.
-2. Crea una rama descriptiva: `feature/sort-heap` o `fix/overflow-error`.
+2. Crea una rama descriptiva: `fix/overflow-error`.
 3. Realiza tus cambios y asegúrate de que compilan.
 4. Agrega documentación y ejemplos si aplica.
 5. Abre un Pull Request explicando:

@@ -1,4 +1,4 @@
-> 📄 This CONTRIBUTING GUIDE is also available in [Español](/.github/CONTRIBUTING_ES.md)
+> 📄 This CONTRIBUTING GUIDE is also available in [Español](</.github/CONTRIBUTING ES.md>)
 
 # 🛠️ Contribution Guide
 
@@ -9,7 +9,7 @@ Thank you for your interest in contributing to **Simple Runtime Analyzer**! This
 ## 📦 Welcome Contributions
 
 - New benchmarking algorithms or functions
-- Technical documentation improvements (`.dox`, examples, README)
+- Technical documentation improvements
 - Bug fixes or performance enhancements
 - Additional visualization or analysis scripts
 - Translations or onboarding improvements
@@ -30,18 +30,9 @@ Before submitting your contribution, please ensure:
 
 ---
 
-## 📁 Project Structure
-
-- `include/`: Public headers
-- `docs/`: Technical documentation (`.dox`, examples, notes)
-- `example/`: Use cases
-- `data/`: Generated test files
-
----
-
 ## 🧪 Testing Your Contribution
 
-1. Verify the project builds with `make`
+1. Verify the project builds with CMake
 2. Run `example.cpp` or create a new file in `examples/`
 3. Check that `.csv` and `.json` files generate correctly
 4. Use `plot.py` to visualize results
@@ -52,7 +43,7 @@ Before submitting your contribution, please ensure:
 ## 📝 Submission Process
 
 1. Fork the repository
-2. Create a descriptive branch: `feature/sort-heap` or `fix/overflow-error`
+2. Create a descriptive branch: `fix/overflow-error`
 3. Make your changes and ensure they compile
 4. Add documentation and examples if applicable
 5. Open a Pull Request explaining:

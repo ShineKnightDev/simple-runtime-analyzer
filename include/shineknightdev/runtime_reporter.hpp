@@ -10,14 +10,12 @@
 
 #include "shineknightdev/runtime_analyzer.hpp"
 
-// [Namespace definition]
 namespace sra
 {
 
-// [detail namespace for implementation details]
 namespace detail
 {
-// [write_text_report_impl function]
+
 template <ChronoDuration Unit>
 void write_text_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profile)
 {
@@ -28,9 +26,7 @@ void write_text_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profi
             << "| Time: " << duration.count() << " " << profile.unit_symbol << " | Sample size: " << size << "\n";
     }
 }
-// [<--]
 
-// [write_csv_report_impl function]
 template <ChronoDuration Unit>
 void write_csv_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profile)
 {
@@ -41,9 +37,7 @@ void write_csv_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profil
         out << ++i << "," << profile.unit_symbol << "," << duration.count() << "," << size << "\n";
     }
 }
-// [<--]
 
-// [write_json_report_impl function]
 template <ChronoDuration Unit>
 void write_json_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profile)
 {
@@ -66,20 +60,15 @@ void write_json_report_impl(std::ostream& out, const RuntimeProfile<Unit>& profi
     }
     out << "\n]\n";
 }
-// [<--]
 
 } // namespace detail
-// [<--]
 
-// [print_report function]
 template <ChronoDuration Unit>
 void print_report(const RuntimeProfile<Unit>& runtime_profile)
 {
     detail::write_text_report_impl(std::cout, runtime_profile);
 }
-// [<--]
 
-// [save_report function]
 template <ChronoDuration Unit>
 void save_report(const RuntimeProfile<Unit>& runtime_profile, const std::filesystem::path& filename)
 {
@@ -93,28 +82,24 @@ void save_report(const RuntimeProfile<Unit>& runtime_profile, const std::filesys
     else if (ext == ".json") { detail::write_json_report_impl(file, runtime_profile); }
     else { throw std::runtime_error("Error: Unsupported file extension " + ext.string()); }
 }
-// [<--]
 
-// [save_report overload with default filename]
 template <ChronoDuration Unit>
 void save_report(const RuntimeProfile<Unit>& runtime_profile, const std::string& base_filename = "runtime_report")
 {
     const auto filename = std::filesystem::path(base_filename).replace_extension(".csv");
     save_report(runtime_profile, filename);
 }
-// [<--]
 
-// [Utility function to generate multiple report formats]
 template <ChronoDuration Unit>
 void save_reports(const RuntimeProfile<Unit>& runtime_profile, const std::string& base_filename = "runtime_report")
 {
-    save_report(runtime_profile, base_filename + ".csv");
-    save_report(runtime_profile, base_filename + ".json");
-    save_report(runtime_profile, base_filename + ".txt");
-}
-// [<--]
+    std::filesystem::path base_path(base_filename);
 
-// [Stream-based report generation]
+    save_report(runtime_profile, base_path.replace_extension(".csv"));
+    save_report(runtime_profile, base_path.replace_extension(".json"));
+    save_report(runtime_profile, base_path.replace_extension(".txt"));
+}
+
 template <ChronoDuration Unit, typename Stream>
 requires std::derived_from<Stream, std::ostream>
 void generate_report(Stream& stream, const RuntimeProfile<Unit>& runtime_profile, const std::string& format = "text")
@@ -124,7 +109,5 @@ void generate_report(Stream& stream, const RuntimeProfile<Unit>& runtime_profile
     else if (format == "json") { detail::write_json_report_impl(stream, runtime_profile); }
     else { throw std::invalid_argument("Unsupported format: " + format); }
 }
-// [<--]
 
 } // namespace sra
-// [<--]

@@ -12,12 +12,10 @@
 #include <utility>
 #include <vector>
 
-// [Namespace definition]
 namespace sra
 {
 
 // clang-format off
-// [ChronoDuration concept]
 template <typename T>
 concept ChronoDuration = requires
 {
@@ -28,14 +26,10 @@ concept ChronoDuration = requires
              std::is_same_v<T, std::chrono::minutes> || 
              std::is_same_v<T, std::chrono::hours>;
 };
-// [<--]
 
-// [HasSize concept]
 template <typename T>
 concept HasSize = requires(const T& t) { { t.size() } -> std::convertible_to<std::size_t>; };
-// [<--]
 
-// [get_unit_symbol function]
 template <ChronoDuration T>
 inline constexpr std::string_view get_unit_symbol() noexcept
 {
@@ -47,10 +41,8 @@ inline constexpr std::string_view get_unit_symbol() noexcept
     else if constexpr (std::is_same_v<T, std::chrono::hours>) { return "h"; }
     else { return "units"; }
 }
-// [<--]
 // clang-format on
 
-// [RuntimeProfile struct]
 template <ChronoDuration Unit>
 struct RuntimeProfile
 {
@@ -89,9 +81,7 @@ struct RuntimeProfile
     [[nodiscard]] std::size_t size() const noexcept { return raw_durations.size(); }
     [[nodiscard]] bool empty() const noexcept { return raw_durations.empty(); }
 };
-// [<--]
 
-// [measure_duration function]
 template <ChronoDuration Unit = std::chrono::milliseconds, typename Func, typename... Args>
 requires std::invocable<Func, Args...>
 [[nodiscard]] auto measure_duration(Func&& func, Args&&... args)
@@ -110,9 +100,7 @@ requires std::invocable<Func, Args...>
     const auto end = std::chrono::high_resolution_clock::now();
     return std::chrono::duration_cast<Unit>(end - start);
 }
-// [<--]
 
-// [profile_runtime function]
 template <ChronoDuration Unit = std::chrono::milliseconds,
           typename Func,
           std::ranges::range Container,
@@ -148,9 +136,7 @@ requires HasSize<std::ranges::range_value_t<Container>> &&
 
     return RuntimeProfile<Unit>{std::move(raw_durations), std::move(sample_sizes)};
 }
-// [<--]
 
-// [Utility functions]
 template <ChronoDuration Unit>
 [[nodiscard]] inline auto calculate_average(const RuntimeProfile<Unit>& profile) noexcept
 {
@@ -160,7 +146,6 @@ template <ChronoDuration Unit>
     for (const auto& duration : profile.raw_durations) { total += duration.count(); }
     return Unit{total / profile.raw_durations.size()};
 }
-// [<--]
 
 template <ChronoDuration Unit>
 [[nodiscard]] inline auto calculate_total(const RuntimeProfile<Unit>& profile) noexcept
@@ -169,7 +154,5 @@ template <ChronoDuration Unit>
     for (const auto& duration : profile.raw_durations) { total += duration.count(); }
     return Unit{total};
 }
-// [<--]
 
 } // namespace sra
-// [<--]

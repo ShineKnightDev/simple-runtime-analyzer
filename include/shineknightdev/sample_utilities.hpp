@@ -16,13 +16,12 @@
 #include <utility>
 #include <vector>
 
-// [Namespace definition]
 namespace sra
 {
 
-// [detail namespace for implementation details]
 namespace detail
 {
+
 // Concept to check if a type can be inserted into an ostream
 template <typename T>
 concept StreamInsertable = requires(std::ostream& os, const T& t) {
@@ -38,7 +37,6 @@ template <typename S, typename Sample>
 concept SampleSerializer =
     std::invocable<S, const Sample&> && std::is_convertible_v<std::invoke_result_t<S, const Sample&>, std::string>;
 
-// [escape_json function]
 inline std::string escape_json(const std::string& s) noexcept
 {
     std::ostringstream o;
@@ -63,27 +61,21 @@ inline std::string escape_json(const std::string& s) noexcept
     }
     return o.str();
 }
-// [<--]
-} // namespace detail
-// [<--]
 
-// [SampleSizeConfig struct]
+} // namespace detail
+
 struct SampleSizeConfig
 {
     size_t round_to = 100;
     double bias = 1.0;
 };
-// [<--]
 
-// [round_to function]
 inline size_t round_to(size_t value, size_t multiple) noexcept
 {
     if (multiple == 0) return value;
     return ((value + multiple / 2) / multiple) * multiple;
 }
-// [<--]
 
-// [generate_sizes function]
 [[nodiscard]] inline std::vector<size_t>
 generate_sizes(size_t sample_count, size_t max_sample_size, const SampleSizeConfig& config = {})
 {
@@ -145,9 +137,12 @@ generate_sizes(size_t sample_count, size_t max_sample_size, const SampleSizeConf
 
     return final_sizes;
 }
-// [<--]
 
-// [generate_samples function]
+[[nodiscard]] inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample_size)
+{
+    return generate_sizes(sample_count, max_sample_size, SampleSizeConfig{});
+}
+
 template <typename T, detail::FillerFunction<T> F>
 [[nodiscard]] std::vector<std::vector<T>> generate_samples(F&& filler, const std::vector<size_t>& sizes)
 {
@@ -163,9 +158,7 @@ template <typename T, detail::FillerFunction<T> F>
 
     return result;
 }
-// [<--]
 
-// [serialize_iterable function]
 template <std::ranges::range Iterable>
 requires detail::StreamInsertable<std::ranges::range_value_t<Iterable>>
 [[nodiscard]] std::string serialize_iterable(const Iterable& container)
@@ -180,9 +173,7 @@ requires detail::StreamInsertable<std::ranges::range_value_t<Iterable>>
 
     return result;
 }
-// [<--]
 
-// [save_samples function]
 template <std::ranges::range Container, detail::SampleSerializer<std::ranges::range_value_t<Container>> Serializer>
 void save_samples(const Container& samples, Serializer&& serializer, const std::filesystem::path& filename)
 {
@@ -215,23 +206,12 @@ void save_samples(const Container& samples, Serializer&& serializer, const std::
     }
     else { throw std::runtime_error("Error: Unsupported file extension " + ext.string()); }
 }
-// [<--]
 
-// [save_samples overload with default serializer]
 template <std::ranges::range Container>
 requires detail::StreamInsertable<std::ranges::range_value_t<Container>>
 void save_samples(const Container& samples, const std::filesystem::path& filename)
 {
     save_samples(samples, serialize_iterable<Container>, filename);
 }
-// [<--]
-
-// [Utility function to generate sample sizes with default config]
-[[nodiscard]] inline std::vector<size_t> generate_sizes(size_t sample_count, size_t max_sample_size)
-{
-    return generate_sizes(sample_count, max_sample_size, SampleSizeConfig{});
-}
-// [<--]
 
 } // namespace sra
-// [<--]
