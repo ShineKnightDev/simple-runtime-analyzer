@@ -6,6 +6,7 @@
 bin/
 build/
 data/
+docs/html/
 docs/fonts/
 venv/
 compile_commands.json
