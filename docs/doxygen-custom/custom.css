@@ -2,9 +2,9 @@
 
 html {
     /* primary theme color. This will affect the entire websites color scheme: links, arrows, labels, ... */
-    --primary-color: #d95e00;
-    --primary-dark-color: #ffae00;
-    --primary-light-color: #fffb00;
+    --primary-color: #8c0fffff;
+    --primary-dark-color: #691fadff;
+    --primary-light-color: #f4c457ff;
     --on-primary-color: var(--primary-color);
     max-width: 100vw;
     overflow-x: hidden;
@@ -153,9 +153,9 @@ html {
     html:not(.light-mode) {
         color-scheme: dark;
 
-        --primary-color: #d95e00;
-        --primary-dark-color: #ffae00;
-        --primary-light-color: #fffb00;
+        --primary-color: #8c0fffff;
+        --primary-dark-color: #691fadff;
+        --primary-light-color: #f4c457ff;
 
         --box-shadow: 0 2px 8px 0 rgba(0,0,0,.35);
 
@@ -206,7 +206,7 @@ html {
         --fragment-link: #98c0e3;
         --fragment-preprocessor: #65cabe;
         --fragment-linenumber-color: #cccccc;
-        --fragment-linenumber-background: #35393c;
+        --fragment-linenumber-background: #060606;
         --fragment-linenumber-border: #1f1f1f;
     }
 }
@@ -215,9 +215,9 @@ html {
 html.dark-mode {
     color-scheme: dark;
 
-    --primary-color: #d95e00;
-    --primary-dark-color: #ffae00;
-    --primary-light-color: #fffb00;
+    --primary-color: #8c0fffff;
+    --primary-dark-color: #691fadff;
+    --primary-light-color: #f4c457ff;
 
     --box-shadow: 0 2px 8px 0 rgba(0,0,0,.30);
 
@@ -268,16 +268,24 @@ html.dark-mode {
     --fragment-link: #98c0e3;
     --fragment-preprocessor: #65cabe;
     --fragment-linenumber-color: #cccccc;
-    --fragment-linenumber-background: #35393c;
+    --fragment-linenumber-background: #060606;
     --fragment-linenumber-border: #1f1f1f;
 }
 
-/*
- Title and top navigation
- */
+a:hover, a:focus, a:active {
+    transition: color 0.25s ease-in-out;
+}
 
 #projectname {
     display:none
+}
+
+#projectlogo img {
+    max-height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: var(--spacing-small);
 }
 
 #top {
@@ -290,6 +298,10 @@ html.dark-mode {
     margin-bottom: -1px;
 }
 
+.main-menu-btn-icon, .main-menu-btn-icon:before, .main-menu-btn-icon:after {
+    background: var(--header-foreground);
+}
+
 .sm-dox a, .sm-dox a:hover, .sm-dox a:focus, .sm-dox a:active, .sm-dox a:visited,
 .sm-dox ul a:hover, .sm-dox ul a:focus, .sm-dox ul a:active {
     text-transform: uppercase;
@@ -298,10 +310,6 @@ html.dark-mode {
     font-weight: 500;
     font-style: normal;
 }
-
-/*
- Search box
- */
 
 #MSearchBox {
     height: var(--searchbar-height);
@@ -325,17 +333,6 @@ html.dark-mode {
     margin-right: 50px;
 }
 
-@media screen and (max-width: 972px) {
-    #main-menu > li:last-child {
-        margin-right: 0px;
-        margin-left: 50px;
-    }
-}
-
-/*
- Tree view
- */
-
 #side-nav {
     padding: 0 !important;
     border: none;
@@ -343,7 +340,7 @@ html.dark-mode {
     min-width: 8px;
     max-width: 50vw;
 }
-   
+
 #nav-tree {
     color: var(--side-nav-foreground);
     background: transparent;
@@ -351,7 +348,7 @@ html.dark-mode {
     margin-right: 1px;
 }
 
-#nav-tree .selected .arrow{
+#nav-tree .selected .arrow {
     color: var(--primary-color);
 }
 
@@ -359,7 +356,6 @@ html.dark-mode {
     border: none;
     box-shadow: none;
 }
-
 
 div.header {
     border: none;
@@ -385,16 +381,12 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     font-style: normal;
 }
-/*
-  Footer and nav-path
- */
 
 #nav-path ul {
     background-image: none;
     background: var(--header-background);
-    border: none;
-    border-bottom: none;
-    border-bottom: 0;
+    border: var(--header-background);
+    border-bottom: 2px;
     box-shadow: 0 0.75px 0 var(--separator-color);
     font-size: var(--navigation-font-size);
 }
@@ -415,7 +407,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .github-corner {
-    position: fixed;
+    position: absolute;
     right: 0;
     top: 0;
     z-index: 10000;
@@ -424,8 +416,8 @@ h1, h2, h3, h4, h5, h6 {
 .github-corner svg {
     fill: var(--header-foreground);
     color: var(--header-background);
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
 }
 
 .title_screenshot {

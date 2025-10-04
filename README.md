@@ -1,6 +1,6 @@
 # Simple Runtime Analyzer
 
-[![GitHub Release](https://img.shields.io/github/v/release/shineknightdev/simple-runtime-analyzer)](https://github.com/ShineKnightDev/simple-runtime-analyzer/releases/latest)
+<!--[![GitHub Release](https://img.shields.io/github/v/release/shineknightdev/simple-runtime-analyzer)](https://github.com/ShineKnightDev/simple-runtime-analyzer/releases/latest)-->
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shineknightdev/simple-runtime-analyzer)
 ![C++](https://img.shields.io/badge/C++-23-659ad2?style=flat&logo=cplusplus&logoColor=ffffff&logoSize=auto&labelColor=004482&color=659ad2)
 ![Python](https://img.shields.io/badge/Python-3-e8b600?style=flat&logo=python&logoColor=ffffff&logoSize=auto&labelColor=306998&color=e8b600)

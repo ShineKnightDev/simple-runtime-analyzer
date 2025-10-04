@@ -1,3 +1,15 @@
+/**
+ * @file runtime_reporter.hpp
+ * * @brief Multi-format report generation
+ *
+ * @project Simple Runtime Analyzer
+ *
+ * @author Diego Osorio (ShineKnightDev)
+ *
+ * @copyright Copyright (c) 2025 Diego Osorio (ShineKnightDev)
+ * @license MIT License
+ */
+
 #pragma once
 
 #include <cstddef>
